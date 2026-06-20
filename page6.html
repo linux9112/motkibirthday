@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Lane - Happy Birthday! 💖</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- GSAP for smooth animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    /* Reset & Base Styles */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0A1128;
+      /* Deep royal blue background */
+      font-family: 'Outfit', sans-serif;
+      color: #333;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Background Stars & Glowing Particles */
+    #skyBackground {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .twinkle-star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle 3s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% {
+        opacity: 0.2;
+        transform: scale(0.8);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    /* Hanging stars and hearts styling */
+    .hanging-decorations {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .dangler {
+      position: absolute;
+      top: -20px;
+      transform-origin: top center;
+      animation: sway 5s ease-in-out infinite alternate;
+    }
+
+    .dangler-line {
+      width: 2px;
+      background: rgba(255, 255, 255, 0.25);
+      margin: 0 auto;
+    }
+
+    .dangler-icon {
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    @keyframes sway {
+      0% {
+        transform: rotate(-5deg);
+      }
+
+      100% {
+        transform: rotate(5deg);
+      }
+    }
+
+    /* Floating Balloons styling */
+    .balloon-container {
+      position: fixed;
+      bottom: -100px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .balloon {
+      width: 60px;
+      height: 75px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      position: relative;
+      box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+    }
+
+    .balloon-string {
+      width: 2px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.4);
+      position: absolute;
+      bottom: -88px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Main Cloud Card Container */
+    .main-wrapper {
+      max-width: 900px;
+      width: 95%;
+      margin: 100px auto 100px auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    .cloud-card {
+      background-color: #E0F2FE;
+      /* Pastel blue */
+      border: 6px solid #00F5FF;
+      /* Bright turquoise border */
+      border-radius: 50px;
+      padding: 60px 40px;
+      box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(0, 245, 255, 0.3);
+      position: relative;
+    }
+
+    /* Cloud shape protrusions to give organic feel */
+    .cloud-bubble {
+      position: absolute;
+      background-color: #E0F2FE;
+      border: 6px solid #00F5FF;
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    .bubble-1 {
+      width: 140px;
+      height: 140px;
+      top: -60px;
+      left: 10%;
+      border-bottom: none;
+    }
+
+    .bubble-2 {
+      width: 180px;
+      height: 180px;
+      top: -90px;
+      right: 15%;
+      border-bottom: none;
+    }
+
+    .bubble-3 {
+      width: 100px;
+      height: 100px;
+      bottom: -40px;
+      left: 15%;
+      border-top: none;
+    }
+
+    .bubble-4 {
+      width: 120px;
+      height: 120px;
+      bottom: -50px;
+      right: 20%;
+      border-top: none;
+    }
+
+    /* Decorative Masks to hide overlapping inner borders of cloud bubbles */
+    .cloud-mask {
+      position: absolute;
+      background-color: #E0F2FE;
+      z-index: 0;
+    }
+
+    .mask-top {
+      top: 0;
+      left: 5%;
+      width: 90%;
+      height: 20px;
+    }
+
+    .mask-bottom {
+      bottom: 0;
+      left: 5%;
+      width: 90%;
+      height: 20px;
+    }
+
+    /* Content Area Layering */
+    .cloud-content {
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Headers & Typography */
+    h1,
+    h2,
+    h3 {
+      font-family: 'Lora', serif;
+    }
+
+    .turquoise-title {
+      color: #00B4D8;
+      /* Bright turquoise typography */
+      font-size: 2.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 0px rgba(255, 64, 129, 0.1);
+    }
+
+    .subtitle {
+      color: #FF4081;
+      /* Pink accent */
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .section-divider {
+      margin: 50px 0;
+      height: 4px;
+      background: repeating-linear-gradient(to right,
+          #FF4081,
+          #FF4081 10px,
+          transparent 10px,
+          transparent 20px);
+      border: none;
+    }
+
+    /* Section Intro Area */
+    .intro-section {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .birthday-illustration {
+      margin: 30px auto;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .intro-text {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: #2C3E50;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Interactive Birthday Cake Vector */
+    .cake-wrapper {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      cursor: pointer;
+    }
+
+    .cake-base {
+      width: 140px;
+      height: 60px;
+      background: #FF80AB;
+      border: 3.5px solid #1D1D1D;
+      border-radius: 12px;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+    }
+
+    .cake-frosting {
+      width: 140px;
+      height: 20px;
+      background: #F8BBD0;
+      border-left: 3.5px solid #1D1D1D;
+      border-right: 3.5px solid #1D1D1D;
+      border-bottom: 3.5px solid #1D1D1D;
+      border-radius: 0 0 10px 10px;
+      position: absolute;
+      bottom: 40px;
+      left: 10px;
+    }
+
+    .candle {
+      width: 10px;
+      height: 40px;
+      background: #00E5FF;
+      border: 3.5px solid #1D1D1D;
+      position: absolute;
+      bottom: 70px;
+      left: 75px;
+      transform-origin: bottom center;
+    }
+
+    .flame {
+      width: 14px;
+      height: 22px;
+      background: #FFD54F;
+      border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+      position: absolute;
+      top: -24px;
+      left: -5px;
+      box-shadow: 0 0 12px #FFD54F;
+      animation: flicker 0.6s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% {
+        transform: scale(1) rotate(-2deg);
+      }
+
+      100% {
+        transform: scale(1.15) rotate(2deg);
+      }
+    }
+
+    .smoke-puff {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      width: 8px;
+      height: 8px;
+      top: -30px;
+      left: -2px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* SECTION 2: Audio Memories Glassmorphism Cards */
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #008891;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .audio-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .audio-card {
+      /* Premium Glassmorphism Card style */
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 3px solid rgba(255, 255, 255, 0.6);
+      border-radius: 24px;
+      padding: 20px 25px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .audio-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 100%;
+      background: #FF4081;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .audio-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .audio-card.playing {
+      border-color: #00F5FF;
+      /* Glowing bright turquoise border */
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 10px 30px rgba(0, 245, 255, 0.15);
+    }
+
+    .audio-card.playing::before {
+      opacity: 1;
+    }
+
+    .play-btn-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #00B4D8;
+      border: 3px solid #1D1D1D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 3px 3px 0px #1D1D1D;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .play-btn-circle:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #1D1D1D;
+    }
+
+    .audio-card.playing .play-btn-circle {
+      background: #FF4081;
+      /* Pink active */
+    }
+
+    .play-btn-circle svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+
+    .audio-details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      /* Prevents overflow inside flex box */
+    }
+
+    .audio-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1A365D;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Waveform visualizer container */
+    .waveform-visualizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 3.5px;
+      height: 24px;
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .waveform-bar {
+      width: 4px;
+      height: 4px;
+      background: #00B4D8;
+      border-radius: 2px;
+      transition: height 0.15s ease, background-color 0.3s ease;
+    }
+
+    .audio-card.playing .waveform-bar {
+      background: #FF4081;
+    }
+
+    /* Scrubber Progress Bar */
+    .progress-bar-container {
+      height: 8px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #00B4D8;
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: width 0.1s linear;
+    }
+
+    .audio-card.playing .progress-fill {
+      background: #FF4081;
+    }
+
+    .time-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #718096;
+      margin-top: 4px;
+    }
+
+    /* SECTION 3: Cinematic Video Cards Grid */
+    .video-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .video-card-item {
+      background: rgba(255, 255, 255, 0.45);
+      border: 3.5px solid #1D1D1D;
+      border-radius: 20px;
+      padding: 12px;
+      box-shadow: 6px 6px 0px #1D1D1D;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-card-item:hover {
+      transform: translateY(-6px) rotate(-1.5deg);
+      box-shadow: 10px 10px 0px #1D1D1D;
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .video-thumbnail-container {
+      border: 3px solid #1D1D1D;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      background: #000;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-card-item:hover .video-thumbnail {
+      opacity: 1;
+    }
+
+    .video-thumbnail-container::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.15);
+      transition: background 0.3s ease;
+    }
+
+    .video-card-item:hover .video-thumbnail-container::after {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Decorative play overlay on card hover */
+    .thumbnail-play-overlay {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: 3px solid #1D1D1D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      transform: scale(0.9);
+      opacity: 0.85;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .video-card-item:hover .thumbnail-play-overlay {
+      transform: scale(1.1);
+      opacity: 1;
+      background: #FF4081;
+      border-color: #1D1D1D;
+    }
+
+    .video-card-item:hover .thumbnail-play-overlay svg {
+      fill: #fff;
+    }
+
+    .thumbnail-play-overlay svg {
+      width: 20px;
+      height: 20px;
+      fill: #1D1D1D;
+      margin-left: 2px;
+      transition: fill 0.3s ease;
+    }
+
+    .video-title {
+      margin-top: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1A365D;
+      text-align: center;
+    }
+
+    /* Modal Popup Styling */
+    .video-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 17, 40, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .video-modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-modal-card {
+      background: #fff;
+      border: 5px solid #1D1D1D;
+      border-radius: 28px;
+      padding: 16px;
+      max-width: 800px;
+      width: 90%;
+      box-shadow: 10px 10px 0px #00F5FF;
+      position: relative;
+      transform: scale(0.8) translateY(50px);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .video-modal-backdrop.open .video-modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .video-player-wrapper {
+      border: 3.5px solid #1D1D1D;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 16/9;
+    }
+
+    .video-player-wrapper video {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FF4081;
+      border: 3.5px solid #1D1D1D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #1D1D1D;
+      transition: transform 0.2s ease;
+      z-index: 1010;
+    }
+
+    .modal-close-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #1D1D1D;
+    }
+
+    /* Confetti Canvas Overlay */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Particles Overlay for Background */
+    #glowCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .next-page-btn-container {
+      text-align: center;
+      margin-top: 50px;
+      margin-bottom: 10px;
+    }
+
+    .next-page-btn {
+      display: inline-block;
+      background-color: #FF4081;
+      /* Pink accent */
+      color: white;
+      border: 3.5px solid #1D1D1D;
+      padding: 14px 40px;
+      border-radius: 25px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 6px 6px 0px #1D1D1D;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .next-page-btn:hover {
+      background-color: #F50057;
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 0px #1D1D1D;
+    }
+
+    .next-page-btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0px #1D1D1D;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .main-wrapper {
+        margin: 40px auto 40px auto;
+        width: 92%;
+      }
+
+      .cloud-card {
+        padding: 30px 15px;
+        border-radius: 28px;
+        border-width: 4px;
+      }
+
+      .bubble-1,
+      .bubble-2,
+      .bubble-3,
+      .bubble-4 {
+        display: none;
+        /* Hide cloud protrusion bubbles on small screens to keep layout clean */
+      }
+
+      .turquoise-title {
+        font-size: 1.95rem;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        font-size: 1.05rem;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+      }
+
+      .section-title {
+        font-size: 1.45rem;
+        margin-bottom: 18px;
+      }
+
+      .section-divider {
+        margin: 30px 0;
+      }
+
+      .birthday-illustration {
+        margin: 15px auto;
+        transform: scale(0.8);
+      }
+
+      .intro-text {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .audio-card {
+        padding: 12px 14px;
+        gap: 12px;
+        border-radius: 18px;
+        border-width: 2px;
+      }
+
+      .play-btn-circle {
+        width: 44px;
+        height: 44px;
+        border-width: 2px;
+        box-shadow: 2px 2px 0px #1D1D1D;
+      }
+
+      .audio-name {
+        font-size: 0.98rem;
+      }
+
+      .waveform-visualizer {
+        display: none;
+        /* Hide visualizer waveform on mobile to save layout space */
+      }
+
+      .time-info {
+        font-size: 0.72rem;
+      }
+
+      .video-gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+      }
+
+      .video-card-item {
+        padding: 8px;
+        border-width: 2.5px;
+        box-shadow: 4px 4px 0px #1D1D1D;
+      }
+
+      .video-title {
+        font-size: 0.95rem;
+        margin-top: 8px;
+      }
+
+      .video-modal-card {
+        width: 95%;
+        padding: 40px 10px 10px 10px;
+        /* Top padding leaves space for close button */
+        border-width: 3.5px;
+        box-shadow: 6px 6px 0px #00F5FF;
+      }
+
+      .modal-close-btn {
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        font-size: 1.25rem;
+        border-width: 2.5px;
+        box-shadow: 2px 2px 0px #1D1D1D;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background Canvas Systems -->
+  <canvas id="glowCanvas"></canvas>
+  <canvas id="confettiCanvas"></canvas>
+  <div id="skyBackground"></div>
+
+  <!-- Hanging decorations at the top -->
+  <div class="hanging-decorations" id="hangingDecorations"></div>
+
+  <!-- Cloud wrapper container -->
+  <div class="main-wrapper">
+    <div class="cloud-card">
+      <!-- Bubbles creating the cloud borders -->
+      <div class="cloud-bubble bubble-1"></div>
+      <div class="cloud-bubble bubble-2"></div>
+      <div class="cloud-bubble bubble-3"></div>
+      <div class="cloud-bubble bubble-4"></div>
+      <div class="cloud-mask mask-top"></div>
+      <div class="cloud-mask mask-bottom"></div>
+
+      <div class="cloud-content">
+        <!-- SECTION 1: Happy Birthday -->
+        <section class="intro-section" id="introSection">
+          <h1 class="turquoise-title">Happy Birthday, Motki! 🎉</h1>
+          <p class="subtitle">click cake</p>
+
+          <!-- Interactive Birthday Cake -->
+          <div class="birthday-illustration">
+            <div class="cake-wrapper" id="cakeWrapper" title="Click to blow out the candle!">
+              <div class="cake-base"></div>
+              <div class="cake-frosting"></div>
+              <div class="candle">
+                <div class="flame" id="candleFlame"></div>
+                <div class="smoke-puff" id="smokePuff"></div>
+              </div>
+            </div>
+          </div>
+
+          <p class="intro-text">
+
+          </p>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- SECTION 2: Audio Memories -->
+        <section id="audioSection">
+          <h2 class="section-title"> 🎵</h2>
+          <div class="audio-list">
+            <!-- 5 Custom Audio Cards -->
+
+            <!-- Card 1 -->
+            <div class="audio-card" data-track="1">
+              <div class="play-btn-circle">
+                <svg class="play-icon" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" style="display:none;">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+              </div>
+              <div class="audio-details">
+                <div class="audio-name">🎂 </div>
+                <div class="progress-bar-container">
+                  <div class="progress-fill"></div>
+                </div>
+                <div class="time-info">
+                  <span class="curr-time">0:00</span>
+                  <span class="dur-time">0:00</span>
+                </div>
+              </div>
+              <div class="waveform-visualizer"></div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="audio-card" data-track="2">
+              <div class="play-btn-circle">
+                <svg class="play-icon" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" style="display:none;">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+              </div>
+              <div class="audio-details">
+                <div class="audio-name"> 💕</div>
+                <div class="progress-bar-container">
+                  <div class="progress-fill"></div>
+                </div>
+                <div class="time-info">
+                  <span class="curr-time">0:00</span>
+                  <span class="dur-time">0:00</span>
+                </div>
+              </div>
+              <div class="waveform-visualizer"></div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="audio-card" data-track="3">
+              <div class="play-btn-circle">
+                <svg class="play-icon" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" style="display:none;">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+              </div>
+              <div class="audio-details">
+                <div class="audio-name"> ⭐️</div>
+                <div class="progress-bar-container">
+                  <div class="progress-fill"></div>
+                </div>
+                <div class="time-info">
+                  <span class="curr-time">0:00</span>
+                  <span class="dur-time">0:00</span>
+                </div>
+              </div>
+              <div class="waveform-visualizer"></div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="audio-card" data-track="4">
+              <div class="play-btn-circle">
+                <svg class="play-icon" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" style="display:none;">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+              </div>
+              <div class="audio-details">
+                <div class="audio-name"> 🎀</div>
+                <div class="progress-bar-container">
+                  <div class="progress-fill"></div>
+                </div>
+                <div class="time-info">
+                  <span class="curr-time">0:00</span>
+                  <span class="dur-time">0:00</span>
+                </div>
+              </div>
+              <div class="waveform-visualizer"></div>
+            </div>
+
+
+
+          </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- SECTION 3: Video Gallery -->
+        <section id="videoSection">
+          <h2 class="section-title">🎥</h2>
+          <div class="video-gallery-grid">
+            <!-- 5 Video Cards -->
+
+            <!-- Video 1 -->
+            <div class="video-card-item" data-video="1">
+              <div class="video-thumbnail-container">
+                <video class="video-thumbnail" src="1.mp4" muted playsinline preload="metadata"></video>
+                <div class="thumbnail-play-overlay">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="video-title">Moments of Laughter 🌸</div>
+            </div>
+
+            <!-- Video 2 -->
+            <div class="video-card-item" data-video="2">
+              <div class="video-thumbnail-container">
+                <video class="video-thumbnail" src="2.mp4" muted playsinline preload="metadata"></video>
+                <div class="thumbnail-play-overlay">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="video-title">Special Adventures 💕</div>
+            </div>
+
+            <!-- Video 3 -->
+            <div class="video-card-item" data-video="3">
+              <div class="video-thumbnail-container">
+                <video class="video-thumbnail" src="3.mp4" muted playsinline preload="metadata"></video>
+                <div class="thumbnail-play-overlay">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="video-title">Our Quiet Walks ⭐️</div>
+            </div>
+
+            <!-- Video 4 -->
+            <div class="video-card-item" data-video="4">
+              <div class="video-thumbnail-container">
+                <video class="video-thumbnail" src="4.mp4" muted playsinline preload="metadata"></video>
+                <div class="thumbnail-play-overlay">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="video-title">Unforgettable Places 🍀</div>
+            </div>
+
+            <!-- Video 5 -->
+            <div class="video-card-item" data-video="5">
+              <div class="video-thumbnail-container">
+                <video class="video-thumbnail" src="5.mp4" muted playsinline preload="metadata"></video>
+                <div class="thumbnail-play-overlay">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="video-title">Together as One 🎀</div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Continue Button -->
+        <div class="next-page-btn-container">
+          <a href="letter.html" class="next-page-btn">Continue →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Playback Modal -->
+  <div class="video-modal-backdrop" id="videoModal">
+    <div class="video-modal-card">
+      <div class="modal-close-btn" id="modalClose">&times;</div>
+      <div class="video-player-wrapper">
+        <video id="modalVideo" src="" controls preload="auto"></video>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. Global Page Background, Sway Decorations, & Particles
+       ========================================================================== */
+    function initBackgroundSystem() {
+      // 1. Generate twinkle stars
+      const background = document.getElementById('skyBackground');
+      for (let i = 0; i < 45; i++) {
+        const star = document.createElement('div');
+        star.className = 'twinkle-star';
+        const size = Math.random() * 3.5 + 1.5;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 4 + 's';
+        star.style.animationDuration = Math.random() * 3 + 2 + 's';
+        background.appendChild(star);
+      }
+
+      // 2. Generate hanging stars and hearts
+      const decorations = document.getElementById('hangingDecorations');
+      const icons = ['❤️', '⭐️', '💖', '✨', '💕', '⭐'];
+      const screenWidth = window.innerWidth;
+      const amount = Math.floor(screenWidth / 80); // Responsive spacing
+
+      for (let i = 0; i < amount; i++) {
+        const dangler = document.createElement('div');
+        dangler.className = 'dangler';
+        const line = document.createElement('div');
+        line.className = 'dangler-line';
+
+        const lineVal = Math.random() * 80 + 40;
+        line.style.height = lineVal + 'px';
+
+        const icon = document.createElement('div');
+        icon.className = 'dangler-icon';
+        icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+
+        dangler.appendChild(line);
+        dangler.appendChild(icon);
+
+        dangler.style.left = (i * (100 / amount)) + (Math.random() * 4 - 2) + '%';
+        dangler.style.animationDelay = (Math.random() * 3) + 's';
+        dangler.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        decorations.appendChild(dangler);
+      }
+
+      // 3. Balloon pop & spawn triggers
+      document.body.addEventListener('click', (e) => {
+        if (!e.target.closest('#cakeWrapper') && !e.target.closest('.audio-card') && !e.target.closest('.video-card-item') && !e.target.closest('#videoModal')) {
+          spawnBalloons(e.clientX, e.clientY, 3);
+        }
+      });
+    }
+
+    // Balloon generator function
+    function spawnBalloons(x, y, count) {
+      const colors = ['#FF4081', '#00E5FF', '#D8B4FE', '#F472B6', '#FBBF24', '#34D399'];
+      for (let i = 0; i < count; i++) {
+        const container = document.createElement('div');
+        container.className = 'balloon-container';
+
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+
+        const string = document.createElement('div');
+        string.className = 'balloon-string';
+
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        balloon.style.backgroundColor = color;
+        balloon.style.borderColor = '#1D1D1D';
+        balloon.style.borderWidth = '3px';
+        balloon.style.borderStyle = 'solid';
+
+        // Add triangle tie color
+        const style = document.createElement('style');
+        style.textContent = `.balloon::after { border-bottom: 8px solid #1D1D1D; }`; // Simple black string connector
+        balloon.appendChild(style);
+
+        container.appendChild(balloon);
+        container.appendChild(string);
+        document.body.appendChild(container);
+
+        // Random drift direction
+        const targetX = x + (Math.random() * 160 - 80);
+        const floatDuration = Math.random() * 4 + 4;
+
+        gsap.set(container, { x: x - 30, y: y });
+        gsap.to(container, {
+          y: -200,
+          x: targetX,
+          rotation: Math.random() * 40 - 20,
+          opacity: 0,
+          duration: floatDuration,
+          ease: 'power1.out',
+          onComplete: () => container.remove()
+        });
+      }
+    }
+
+    /* Floating particles background system */
+    const glowCanvas = document.getElementById('glowCanvas');
+    const glowCtx = glowCanvas.getContext('2d');
+    let glowParticles = [];
+
+    function resizeGlowCanvas() {
+      glowCanvas.width = window.innerWidth;
+      glowCanvas.height = window.innerHeight;
+    }
+
+    class GlowParticle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * glowCanvas.width;
+        this.y = glowCanvas.height + 20;
+        this.size = Math.random() * 6 + 2;
+        this.speedY = -(Math.random() * 0.8 + 0.3);
+        this.speedX = Math.random() * 0.4 - 0.2;
+        this.alpha = Math.random() * 0.5 + 0.2;
+        this.color = Math.random() > 0.5 ? 'rgba(0, 245, 255,' : 'rgba(255, 64, 129,'; // turquoise or pink
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        if (this.y < -20 || this.x < -20 || this.x > glowCanvas.width + 20) {
+          this.reset();
+        }
+      }
+      draw() {
+        glowCtx.save();
+        glowCtx.globalAlpha = this.alpha;
+        glowCtx.beginPath();
+        glowCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        glowCtx.fillStyle = this.color + this.alpha + ')';
+        glowCtx.shadowColor = this.color + '1)';
+        glowCtx.shadowBlur = 8;
+        glowCtx.fill();
+        glowCtx.restore();
+      }
+    }
+
+    function initGlowSystem() {
+      resizeGlowCanvas();
+      window.addEventListener('resize', resizeGlowCanvas);
+      for (let i = 0; i < 30; i++) {
+        glowParticles.push(new GlowParticle());
+      }
+      animateGlow();
+    }
+
+    function animateGlow() {
+      glowCtx.clearRect(0, 0, glowCanvas.width, glowCanvas.height);
+      glowParticles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateGlow);
+    }
+
+
+    /* ==========================================================================
+       2. Confetti Particle Explosion Engine
+       ========================================================================== */
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    const confettiCtx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+
+    function resizeConfettiCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeConfettiCanvas);
+    resizeConfettiCanvas();
+
+    class Confetti {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 10 + 6;
+        const colors = ['#FF4081', '#00E5FF', '#D8B4FE', '#FBBF24', '#34D399', '#3B82F6'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.vx = (Math.random() - 0.5) * 8;
+        this.vy = -(Math.random() * 6 + 6);
+        this.gravity = 0.18;
+        this.alpha = 1.0;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.15;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += this.gravity;
+        this.rotation += this.rotationSpeed;
+        this.alpha -= 0.012;
+        return this.alpha > 0;
+      }
+      draw() {
+        confettiCtx.save();
+        confettiCtx.globalAlpha = this.alpha;
+        confettiCtx.translate(this.x, this.y);
+        confettiCtx.rotate(this.rotation);
+        confettiCtx.fillStyle = this.color;
+        confettiCtx.strokeStyle = '#1D1D1D';
+        confettiCtx.lineWidth = 1.5;
+        confettiCtx.beginPath();
+        // Draw little rects
+        confettiCtx.rect(-this.size / 2, -this.size / 3, this.size, this.size / 1.5);
+        confettiCtx.fill();
+        confettiCtx.stroke();
+        confettiCtx.restore();
+      }
+    }
+
+    function triggerConfettiExplosion(x, y) {
+      for (let i = 0; i < 40; i++) {
+        confettiParticles.push(new Confetti(x, y));
+      }
+    }
+
+    function animateConfetti() {
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confettiParticles = confettiParticles.filter(c => {
+        const active = c.update();
+        if (active) c.draw();
+        return active;
+      });
+      requestAnimationFrame(animateConfetti);
+    }
+    animateConfetti();
+
+
+    /* ==========================================================================
+       3. Interactive Birthday Cake (Blow candles + Wish trigger)
+       ========================================================================== */
+    function initBirthdayCake() {
+      const wrapper = document.getElementById('cakeWrapper');
+      const flame = document.getElementById('candleFlame');
+      const smoke = document.getElementById('smokePuff');
+      let isLit = true;
+
+      wrapper.addEventListener('click', (e) => {
+        if (!isLit) {
+          // Re-light the candle
+          gsap.to(flame, { opacity: 1, scale: 1, duration: 0.3 });
+          isLit = true;
+          return;
+        }
+
+        // Blow out animation
+        gsap.to(flame, {
+          opacity: 0,
+          scale: 0.1,
+          duration: 0.4,
+          ease: 'power2.out',
+          onComplete: () => {
+            isLit = false;
+            // Smoke puff animation
+            gsap.set(smoke, { opacity: 1, scale: 0.5, x: 0, y: 0 });
+            gsap.to(smoke, {
+              opacity: 0,
+              scale: 2.2,
+              x: Math.random() * 20 - 10,
+              y: -35,
+              duration: 1.2,
+              ease: 'power1.out'
+            });
+            // Explode confetti & balloons
+            const rect = wrapper.getBoundingClientRect();
+            triggerConfettiExplosion(rect.left + rect.width / 2, rect.top + 20);
+            spawnBalloons(rect.left + rect.width / 2, rect.top + 20, 5);
+          }
+        });
+      });
+    }
+
+
+    /* ==========================================================================
+       4. custom Audio Memories (1.mp3 to 5.mp3)
+       ========================================================================== */
+    let activeAudio = null;
+    let activeCard = null;
+    let visualizerInterval = null;
+
+    function formatTime(secs) {
+      const minutes = Math.floor(secs / 60) || 0;
+      const seconds = Math.floor(secs % 60) || 0;
+      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function initAudioPlayers() {
+      const cards = document.querySelectorAll('.audio-card');
+
+      cards.forEach(card => {
+        const trackId = card.getAttribute('data-track');
+        const playIcon = card.querySelector('.play-icon');
+        const pauseIcon = card.querySelector('.pause-icon');
+        const fill = card.querySelector('.progress-fill');
+        const currLabel = card.querySelector('.curr-time');
+        const durLabel = card.querySelector('.dur-time');
+        const scrubber = card.querySelector('.progress-bar-container');
+        const visualizer = card.querySelector('.waveform-visualizer');
+
+        // Create 15 waveform bars for the visualizer
+        for (let i = 0; i < 15; i++) {
+          const bar = document.createElement('div');
+          bar.className = 'waveform-bar';
+          visualizer.appendChild(bar);
+        }
+        const bars = visualizer.querySelectorAll('.waveform-bar');
+
+        // Initialize Audio object
+        const audio = new Audio(`${trackId}.mp3`);
+        audio.preload = 'metadata';
+
+        audio.addEventListener('loadedmetadata', () => {
+          durLabel.textContent = formatTime(audio.duration);
+        });
+
+        // Time update handler
+        audio.addEventListener('timeupdate', () => {
+          if (activeAudio === audio) {
+            const percent = (audio.currentTime / audio.duration) * 100 || 0;
+            fill.style.width = percent + '%';
+            currLabel.textContent = formatTime(audio.currentTime);
+          }
+        });
+
+        // Track ended handler
+        audio.addEventListener('ended', () => {
+          stopActiveAudio();
+        });
+
+        // Scrubber progress interaction
+        scrubber.addEventListener('click', (e) => {
+          e.stopPropagation(); // Prevent card play toggle click
+          if (audio.duration) {
+            const rect = scrubber.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const clickPercent = clickX / width;
+            audio.currentTime = clickPercent * audio.duration;
+            if (!isPlaying(audio)) {
+              togglePlay(audio, card, playIcon, pauseIcon, bars);
+            }
+          }
+        });
+
+        // Toggle card click play/pause
+        card.addEventListener('click', (e) => {
+          togglePlay(audio, card, playIcon, pauseIcon, bars);
+        });
+      });
+    }
+
+    function isPlaying(audio) {
+      return !audio.paused && !audio.ended;
+    }
+
+    function stopActiveAudio() {
+      if (activeAudio) {
+        activeAudio.pause();
+        if (activeCard) {
+          activeCard.classList.remove('playing');
+          activeCard.querySelector('.play-icon').style.display = 'block';
+          activeCard.querySelector('.pause-icon').style.display = 'none';
+
+          // Flatten waveform bars
+          const bars = activeCard.querySelectorAll('.waveform-bar');
+          bars.forEach(b => b.style.height = '4px');
+        }
+      }
+      if (visualizerInterval) {
+        clearInterval(visualizerInterval);
+        visualizerInterval = null;
+      }
+      activeAudio = null;
+      activeCard = null;
+    }
+
+    function togglePlay(audio, card, playIcon, pauseIcon, bars) {
+      if (activeAudio === audio) {
+        // Same track: Toggle Play/Pause
+        if (isPlaying(audio)) {
+          audio.pause();
+          card.classList.remove('playing');
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
+
+          // Stop visualizer bars bouncing
+          if (visualizerInterval) {
+            clearInterval(visualizerInterval);
+            visualizerInterval = null;
+          }
+          bars.forEach(b => b.style.height = '4px');
+        } else {
+          audio.play().catch(e => console.log('Playback blocked:', e));
+          card.classList.add('playing');
+          playIcon.style.display = 'none';
+          pauseIcon.style.display = 'block';
+          startVisualizer(bars);
+        }
+      } else {
+        // Different track: Stop active, play new
+        stopActiveAudio();
+
+        activeAudio = audio;
+        activeCard = card;
+
+        audio.play().catch(e => console.log('Playback blocked:', e));
+        card.classList.add('playing');
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+        startVisualizer(bars);
+      }
+    }
+
+    function startVisualizer(bars) {
+      if (visualizerInterval) clearInterval(visualizerInterval);
+      visualizerInterval = setInterval(() => {
+        bars.forEach(bar => {
+          const randHeight = Math.random() * 20 + 4; // Bouncing between 4px and 24px
+          bar.style.height = randHeight + 'px';
+        });
+      }, 100);
+    }
+
+
+    /* ==========================================================================
+       5. Video Gallery Cinematic Modals (1.mp4 to 5.mp4)
+       ========================================================================== */
+    function initVideoModal() {
+      const items = document.querySelectorAll('.video-card-item');
+      const modal = document.getElementById('videoModal');
+      const closeBtn = document.getElementById('modalClose');
+      const modalVideo = document.getElementById('modalVideo');
+
+      items.forEach(item => {
+        const videoId = item.getAttribute('data-video');
+        const thumbVideo = item.querySelector('.video-thumbnail');
+
+        // Hover to play video preview
+        item.addEventListener('mouseenter', () => {
+          if (thumbVideo) {
+            thumbVideo.play().catch(e => {
+              // Playback might be blocked or file not found yet; catch silently
+            });
+          }
+        });
+
+        // Leave to pause and reset preview
+        item.addEventListener('mouseleave', () => {
+          if (thumbVideo) {
+            thumbVideo.pause();
+            thumbVideo.currentTime = 0;
+          }
+        });
+
+        item.addEventListener('click', () => {
+          // Pause background audio notes if playing
+          stopActiveAudio();
+
+          // Pause preview video
+          if (thumbVideo) {
+            thumbVideo.pause();
+          }
+
+          // Set source and open modal
+          modalVideo.src = `${videoId}.mp4`;
+          modal.classList.add('open');
+
+          // Delay play slightly to align with popup transition
+          setTimeout(() => {
+            modalVideo.play().catch(e => console.log("Modal play blocked:", e));
+          }, 300);
+        });
+      });
+
+      function closeModal() {
+        modal.classList.remove('open');
+        modalVideo.pause();
+        modalVideo.src = '';
+      }
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) {
+          closeModal();
+        }
+      });
+    }
+
+
+    /* ==========================================================================
+       6. DOM Loaded Page Transition & Initiation
+       ========================================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      // Intro GSAP card pop-in
+      gsap.from('.cloud-card', {
+        scale: 0.85,
+        opacity: 0,
+        y: 80,
+        duration: 1.3,
+        ease: 'back.out(1.2)'
+      });
+
+      // Danglers sway fall-in
+      gsap.from('.dangler', {
+        y: -150,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.05,
+        ease: 'power2.out'
+      });
+
+      // Init handlers
+      initBackgroundSystem();
+      initGlowSystem();
+      initBirthdayCake();
+      initAudioPlayers();
+      initVideoModal();
+    });
+  </script>
+</body>
+
+</html>

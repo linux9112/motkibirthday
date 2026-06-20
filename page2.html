@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="2/2.css">
+    <style>
+        .btn-celebrate {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            font-family: 'Quicksand', sans-serif;
+            z-index: 10;
+        }
+        .btn-celebrate:hover {
+            background: #ff1e46;
+            transform: translateX(-50%) translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Code inherited from folder 2 directly -->
+    <h1>Happy Birthday </h1>
+    <canvas id="birthday"></canvas>
+
+    <!-- Custom celebration button overlaid on the fireworks -->
+    <a href="page3.html" class="btn-celebrate">Celebrate 🎉</a>
+    
+    <script src="2/3.js"></script>
+</body>
+</html>

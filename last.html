@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cake Builder</title>
+    <link rel="stylesheet" href="4/2.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Lora:ital,wght@0,500;0,700;1,500&family=Great+Vibes&display=swap');
+
+        /* Re-style entire page to use Outfit/Lora for Princess page 6 dark theme */
+        body,
+        button,
+        input,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .startagain,
+        .button,
+        .sa,
+        .modal_content p {
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        body {
+            background: #0A1128 !important; /* Starry deep royal blue background */
+            color: #fff !important;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Titles and Description Headings */
+        body .birthday_inner__stage h1 {
+            color: #00F5FF !important; /* Neon bright turquoise */
+            font-family: 'Lora', serif !important;
+            font-weight: 700 !important;
+            text-shadow: 0 0 15px rgba(0, 245, 255, 0.3) !important;
+        }
+        
+        body .birthday_inner__stage h2 {
+            color: #FF4081 !important; /* Hot bright pink */
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase !important;
+            font-weight: 600 !important;
+            letter-spacing: 1.5px !important;
+            text-shadow: 0 0 10px rgba(255, 64, 129, 0.2) !important;
+        }
+
+        /* Starry background & hanging decorations styling matching page6 */
+        #skyBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .twinkle-star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .hanging-decorations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .dangler {
+            position: absolute;
+            top: -20px;
+            transform-origin: top center;
+            animation: sway 5s ease-in-out infinite alternate;
+        }
+
+        .dangler-line {
+            width: 2px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0 auto;
+        }
+
+        .dangler-icon {
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        }
+
+        @keyframes sway {
+            0% {
+                transform: rotate(-5deg);
+            }
+            100% {
+                transform: rotate(5deg);
+            }
+        }
+
+        /* Glassmorphism Dialog Modal Card */
+        body .birthday_inner__modal {
+            width: 500px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            transition: all 0.4s;
+            margin: auto;
+            text-align: center;
+            top: 50%;
+            transform: translateY(-50%) scale(0);
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 3.5px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+            border-radius: 24px !important;
+            z-index: 20;
+            padding: 40px 40px 100px 40px;
+        }
+
+        body .birthday_inner__modal h1 {
+            color: #00F5FF !important;
+            font-family: 'Lora', serif !important;
+            font-weight: 700 !important;
+        }
+
+        body .birthday_inner__modal p {
+            color: #E0F2FE !important;
+            font-size: 15px !important;
+            margin-bottom: 20px;
+        }
+
+        /* High-fidelity Glassmorphism button style overriding SA styles */
+        body .birthday_inner__stage button,
+        body .birthday_inner__modal button,
+        .sa.button,
+        .sa-restart.button {
+            background-color: #FF4081 !important;
+            color: white !important;
+            border: 3px solid #1D1D1D !important;
+            box-shadow: 4px 4px 0px #1D1D1D !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            padding: 12px 28px !important;
+            border-radius: 20px !important;
+            transition: all 0.2s ease !important;
+            cursor: pointer !important;
+            outline: none !important;
+        }
+
+        body .birthday_inner__stage button:hover,
+        body .birthday_inner__modal button:hover,
+        .sa.button:hover,
+        .sa-restart.button:hover {
+            background-color: #F50057 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 6px 6px 0px #1D1D1D !important;
+        }
+
+        body .birthday_inner__stage button:active,
+        body .birthday_inner__modal button:active,
+        .sa.button:active,
+        .sa-restart.button:active {
+            transform: translate(2px, 2px) !important;
+            box-shadow: 1px 1px 0px #1D1D1D !important;
+        }
+
+        /* High-fidelity Active/Inactive highlights for Sponges and Cream containers */
+        body .birthday_inner__stage .options .sponges,
+        body .birthday_inner__stage .options .Cream {
+            float: left !important;
+            width: 220px !important;
+            margin-right: 0 !important;
+            margin-bottom: 0 !important;
+            padding: 12px 15px 15px 15px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06) !important;
+            border: 2px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: scale(0.97);
+            display: flow-root;
+        }
+
+        body .birthday_inner__stage .options .sponges {
+            margin-right: 20px !important; /* Space between the two columns */
+        }
+
+        /* Active highlight state */
+        body .birthday_inner__stage .options .sponges:not(.inactive),
+        body .birthday_inner__stage .options .Cream:not(.inactive) {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: #00F5FF !important;
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.2) !important;
+            transform: scale(1.02);
+            z-index: 10;
+        }
+
+        /* Inactive dimmed state */
+        body .birthday_inner__stage .options .inactive {
+            opacity: 0.25 !important;
+            filter: grayscale(85%) blur(0.5px) !important;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        /* Active heading highlighting */
+        body .birthday_inner__stage .options .sponges:not(.inactive) h3,
+        body .birthday_inner__stage .options .Cream:not(.inactive) h3 {
+            color: #00F5FF !important;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.4) !important;
+        }
+
+        body .birthday_inner__stage .options .sponges h3,
+        body .birthday_inner__stage .options .Cream h3 {
+            color: #00B4D8 !important;
+            font-family: 'Lora', serif !important;
+            font-weight: 700 !important;
+            font-size: 20px !important;
+        }
+
+        body .birthday_inner__stage .options .sponges h5,
+        body .birthday_inner__stage .options .Cream h5 {
+            color: #FF4081 !important;
+            font-weight: 600 !important;
+        }
+
+        /* Set margins for item items inside compact columns */
+        body .birthday_inner__stage .options .sponges .item,
+        body .birthday_inner__stage .options .Cream .item {
+            margin-right: 10px !important;
+            margin-bottom: 10px !important;
+        }
+
+        /* Adjust cake margin-top since cards are side-by-side and more compact */
+        body .birthday_inner__stage .cakemake {
+            margin-top: 175px !important;
+            z-index: 12;
+            position: relative;
+        }
+
+        /* Reposition Start Again button to not clash with compact cards */
+        body .birthday_inner__stage .startagain {
+            color: #FF4081 !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: 600 !important;
+            cursor: pointer;
+            transition: all 0.2s;
+            top: 325px !important;
+            z-index: 12;
+        }
+        
+        body .birthday_inner__stage .startagain:hover {
+            color: #F50057 !important;
+            text-shadow: 0 0 8px rgba(255, 64, 129, 0.4);
+        }
+
+        /* Make the options card look clickable, hoverable and interactive */
+        .options .item {
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .options .item:hover {
+            transform: scale(1.1);
+        }
+
+        .options .item_inner {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        body .birthday_inner__stage .options .sponges .item h4,
+        body .birthday_inner__stage .options .Cream .item h4 {
+            color: #E0F2FE !important;
+            font-size: 12px !important;
+        }
+
+        /* New flavor colors in options select screen */
+        body .birthday_inner__stage .options .sponges .item .choc-sponge {
+            background: #6c584c;
+        }
+
+        body .birthday_inner__stage .options .sponges .item .blueberry {
+            background: #9d4edd;
+        }
+
+        body .birthday_inner__stage .options .sponges .item .pistachio {
+            background: #c7f9cc;
+        }
+
+        body .birthday_inner__stage .options .Cream .item .blueberry-cream {
+            background: #8338ec;
+        }
+
+        body .birthday_inner__stage .options .Cream .item .mint-cream {
+            background: #06d6a0;
+        }
+
+        /* Cake building new layers styling */
+        body .birthday_inner__stage .cakemake .sponge-choc-sponge {
+            background-color: #6c584c;
+        }
+
+        body .birthday_inner__stage .cakemake .sponge-choc-sponge div {
+            background: #4a3c31;
+        }
+
+        body .birthday_inner__stage .cakemake .sponge-blueberry {
+            background-color: #9d4edd;
+        }
+
+        body .birthday_inner__stage .cakemake .sponge-blueberry div {
+            background: #7b2cbf;
+        }
+
+        body .birthday_inner__stage .cakemake .sponge-pistachio {
+            background-color: #c7f9cc;
+        }
+
+        body .birthday_inner__stage .cakemake .sponge-pistachio div {
+            background: #80ed99;
+        }
+
+        body .birthday_inner__stage .cakemake .filling-blueberry-cream {
+            background: #8338ec;
+        }
+
+        body .birthday_inner__stage .cakemake .filling-blueberry-cream div {
+            background: #8338ec;
+        }
+
+        body .birthday_inner__stage .cakemake .filling-mint-cream {
+            background: #06d6a0;
+        }
+
+        body .birthday_inner__stage .cakemake .filling-mint-cream div {
+            background: #06d6a0;
+        }
+
+        /* Staggered dynamic dripping melt-down animation for cream */
+        @keyframes melt-down {
+            0% {
+                transform: scaleY(0);
+            }
+
+            100% {
+                transform: scaleY(1);
+            }
+        }
+
+        body .birthday_inner__stage .cakemake .filling {
+            overflow: visible;
+            /* Ensure drips are visible */
+        }
+
+        body .birthday_inner__stage .cakemake .filling div {
+            transform-origin: top;
+            transform: scaleY(0);
+            animation: melt-down 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        /* Stagger delays to make the dripping look natural and juicy */
+        body .birthday_inner__stage .cakemake .filling div:nth-child(1) {
+            animation-delay: 0.0s;
+        }
+
+        body .birthday_inner__stage .cakemake .filling div:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+
+        body .birthday_inner__stage .cakemake .filling div:nth-child(3) {
+            animation-delay: 0.06s;
+        }
+
+        body .birthday_inner__stage .cakemake .filling div:nth-child(4) {
+            animation-delay: 0.18s;
+        }
+
+        body .birthday_inner__stage .cakemake .filling div:nth-child(5) {
+            animation-delay: 0.09s;
+        }
+
+        body .birthday_inner__stage .cakemake .filling div:nth-child(6) {
+            animation-delay: 0.15s;
+        }
+
+        body .birthday_inner__stage .cakemake .filling div:nth-child(7) {
+            animation-delay: 0.03s;
+        }
+
+        body .birthday_inner__stage .cakemake .filling div:nth-child(8) {
+            animation-delay: 0.21s;
+        }
+
+        /* Bouncy drop-in animation for sponges */
+        @keyframes drop-bounce {
+            0% {
+                transform: translateY(-80px) scaleY(1.2);
+                opacity: 0;
+            }
+
+            60% {
+                transform: translateY(12px) scaleY(0.9);
+                opacity: 1;
+            }
+
+            85% {
+                transform: translateY(-6px) scaleY(1.05);
+            }
+
+            100% {
+                transform: translateY(0) scaleY(1);
+            }
+        }
+
+        body .birthday_inner__stage .cakemake .sponge {
+            animation: drop-bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+            transform-origin: bottom center;
+        }
+    </style>
+</head>
+
+    <canvas id="birthday"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 15; pointer-events: none; display: none;"></canvas>
+    <!-- Starry background & decorations matching page6 -->
+    <div id="skyBackground"></div>
+    <div class="hanging-decorations" id="hangingDecorations"></div>
+    <div class="birthday">
+        <div class="birthday_inner">
+            <div class="birthday_inner__modal">
+                <div class="modal_image">
+                    <img src="/">
+                </div>
+                <div class="modal_content">
+                    <h1>Title</h1>
+                    <p>Content</p>
+                    <button>OK</button>
+                </div>
+            </div>
+            <div class="birthday_inner__stage stage1">
+                <div class="intro_cake">
+                    <img class="intro" src="cake.png">
+                </div>
+                <button class="start">-----">" </button>
+            </div>
+            <div class="birthday_inner__stage stage2">
+                <h1>Mix karo</h1>
+                <h2>.</h2>
+                <div class="mix">
+                    <div class="mix_bowl">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/bowl.png">
+                    </div>
+                    <div class="mix_spoon">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/spoon.png">
+                    </div>
+                </div>
+                <button class="mixer">Click here to mix</button>
+            </div>
+            <div class="birthday_inner__stage stage3">
+                <h1>Ab pakao</h1>
+                <h2>ab apna thali utha kar ovaen main rakho</h2>
+                <div class="oven" style="z-index: 10;">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/oven.png">
+                </div>
+                <div class="tin" style="z-index: 20;">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/tin.png">
+                </div>
+            </div>
+            <div class="birthday_inner__stage stage4">
+                <h1>Ab kitne floor ka cake chahiye </h1>
+                <h2>ek baar sponges par click karo phir cream par jitna bada cake chahiye tab tak</h2>
+
+                <div class="svg">
+                    <!-- Replaced original SVG with simple styled text -->
+                    <h1 class="motki-text"
+                        style="display:none; color: #e77572; font-family: 'Dancing Script', cursive; font-weight: 700; font-size: 38px; text-align: center; margin-bottom: 20px;">
+                        Dekh lo saadi se pehle hi sab banna sikha de rahe hai, toh khana ham nahi banne wale </h1>
+                </div>
+
+                <div class="options">
+                    <div class="sponges">
+                        <h3>Sponges</h3>
+                        <h5><span>0</span> / 5</h5>
+                        <div class="item" data-flavor="vanilla">
+                            <div class="item_inner vanilla"></div>
+                            <h4>Vanilla</h4>
+                        </div>
+                        <div class="item" data-flavor="strawberry">
+                            <div class="item_inner strawberry"></div>
+                            <h4>Pink</h4>
+                        </div>
+                        <div class="item" data-flavor="fruit">
+                            <div class="item_inner fruit"></div>
+                            <h4>Fruit</h4>
+                        </div>
+                        <div class="item" data-flavor="choc-sponge">
+                            <div class="item_inner choc-sponge"></div>
+                            <h4>Choc</h4>
+                        </div>
+                        <div class="item" data-flavor="blueberry">
+                            <div class="item_inner blueberry"></div>
+                            <h4>Blueberry</h4>
+                        </div>
+                        <div class="item" data-flavor="pistachio">
+                            <div class="item_inner pistachio"></div>
+                            <h4>Pistachio</h4>
+                        </div>
+                    </div>
+                    <div class="Cream inactive">
+                        <h3>Cream/icing</h3>
+                        <h5><span>0</span> / 6</h5>
+                        <div class="item" data-flavor="jam">
+                            <div class="item_inner jam"></div>
+                            <h4>Jam</h4>
+                        </div>
+                        <div class="item" data-flavor="cream">
+                            <div class="item_inner cream"></div>
+                            <h4>Cream</h4>
+                        </div>
+                        <div class="item" data-flavor="choc">
+                            <div class="item_inner choc"></div>
+                            <h4>Choc</h4>
+                        </div>
+                        <div class="item" data-flavor="lemon">
+                            <div class="item_inner lemon"></div>
+                            <h4>Lemon</h4>
+                        </div>
+                        <div class="item" data-flavor="blueberry-cream">
+                            <div class="item_inner blueberry-cream"></div>
+                            <h4>Blueberry</h4>
+                        </div>
+                        <div class="item" data-flavor="mint-cream">
+                            <div class="item_inner mint-cream"></div>
+                            <h4>Mint</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="cakemake">
+                    <div class="base"></div>
+                </div>
+                <div class="startagain">Start again</div>
+                <button class="add">Add the candle</button>
+
+                <!-- Finished Button and Final Celebration Overlays -->
+                <button class="sa button" id="finishBtn"
+                    style="padding: 14px 40px; display: none; text-align: center; margin: 40px auto 0; font-size: 24px; font-family: 'Outfit', sans-serif; font-weight: 700; border-radius: 40px; border: none; background: #FF4081; color: white; cursor: pointer; transition: all 0.23s;">Finished
+                    🎉</button>
+
+                <h1 class="celebrate-title"
+                    style="display: none; color: #00F5FF; font-family: 'Great Vibes', cursive; font-size: 56px; font-weight: 700; text-align: center; margin: 30px auto 0; text-shadow: 0 0 15px rgba(0, 245, 255, 0.5); z-index: 20; position: relative;">
+                    Happy Birthday! 🎂✨</h1>
+                <a href="index.html" class="sa-restart button"
+                    style="padding: 14px 40px; display: none; text-align: center; margin: 20px auto 0; font-size: 24px; font-family: 'Outfit', sans-serif; font-weight: 700; border-radius: 40px; z-index: 20; position: relative; text-decoration: none; background: #FF4081; color: white; box-shadow: 0 5px 15px rgba(27, 48, 91, 0.4); width: fit-content;">Celebrate
+                    Again 🔄</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Embedded and modified 4/3.js logic for custom execution
+        $('.start').click(function () {
+            $('.stage1').fadeOut();
+            fire_modal('https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/cake_modal.png', '🌼', 'Chalo kuch banate hai 😁');
+        })
+
+        var progress = 1;
+
+        $('.modal_content button').click(function () {
+            progress++;
+            close_modal(progress)
+        })
+
+        function close_modal(callback) {
+            var modal = $('.birthday_inner__modal');
+            modal.css('transform', 'translateY(-50%) scale(0)')
+            setTimeout(function () {
+                $('.stage' + callback).fadeIn();
+            }, 600)
+        }
+
+        function fire_modal(imgurl, title, content) {
+            var modal = $('.birthday_inner__modal');
+            modal.find('h1').html(title);
+            modal.find('img').attr('src', imgurl);
+            modal.find('p').html(content);
+            setTimeout(function () {
+                modal.css('transform', 'translateY(-50%) scale(1)')
+            }, 1000)
+        }
+
+        var mixing = false;
+        var mixtimes = 0;
+
+        $('.mixer').click(function () {
+            if (mixing == false) {
+                mixing = true
+                mixtimes++;
+                $('.mix_spoon img').addClass('move')
+                setTimeout(function () {
+                    $('.mix_spoon img').removeClass('move')
+                    mixing = false;
+                }, 1000)
+            }
+            if (mixtimes == 6) {
+                $('.stage2').fadeOut();
+                fire_modal('https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/mix_modal.png', 'Mix successful!', 'waah mix kar li ');
+            }
+        })
+
+        $('.tin').draggable({
+            revert: true
+        })
+        $(".oven").droppable({
+            drop: function (event, ui) {
+                $('.stage3').fadeOut();
+                fire_modal('https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/oven_modal.png', 'Bake successful!', 'waah paka bhi lli');
+            }
+        })
+
+        var bases = 0;
+        var Cream = 0;
+
+        $('.sponges .item').click(function () {
+            $('.sponges').addClass('inactive')
+            $('.Cream').removeClass('inactive')
+            var t = $(this).attr('data-flavor');
+            bases++
+            if (bases < 6) {
+                add_sponge(t)
+            }
+        })
+
+        $('.Cream .item').click(function () {
+            $('.Cream').addClass('inactive')
+            $('.sponges').removeClass('inactive')
+            var f = $(this).attr('data-flavor');
+            Cream++
+            if (Cream < 7) {
+                add_filling(f)
+            }
+        })
+
+        function add_sponge(t) {
+            $('.cakemake').prepend('<div style="width:' + (200 - (bases * 20)) + 'px" class="sponge sponge-' + t + '"><div></div><div></div><div></div><div></div><div></div></div>')
+            $('.sponges h5 span').html(bases)
+        }
+
+        $('.startagain').click(function () {
+            $('.cakemake').html('<div class="base"></div>');
+            bases = 0;
+            Cream = 0;
+            $('.sponges h5 span').html(bases)
+            $('.Cream h5 span').html(Cream)
+            $('.sponges').removeClass('inactive')
+            $('.Cream').addClass('inactive')
+        })
+
+        function add_filling(f) {
+            $('.cakemake').prepend('<div style="width:' + (200 - (bases * 20)) + 'px" class="filling filling-' + f + '"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>')
+            $('.Cream h5 span').html(Cream)
+        }
+
+        function fin() {
+            $('h1,h2,.options,.startagain,.add').fadeOut();
+
+            setTimeout(function () {
+                $('.cakemake').fadeIn()
+                $('.cakemake').animate({ 'margin-top': '0px' })
+            }, 1000)
+            add_candle()
+        }
+
+        function add_candle() {
+            var stages = $('.cakemake > div').length;
+            var h = (stages / 2) * 41 + 22 + 'px';
+            $('.cakemake').prepend('<div class="candle" ><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/candle.png" /></div>')
+
+            // Show our custom text instead of the original SVG
+            setTimeout(function () {
+                $('.motki-text').fadeIn(1500);
+            }, 1000);
+
+            setTimeout(function () {
+                $('.sa').css('display', 'inline-block').hide().fadeIn()
+            }, 2200)
+        }
+
+        $('.add').click(function () {
+            fin();
+        })
+
+        $('#finishBtn').click(function (e) {
+            e.preventDefault();
+            $(this).fadeOut();
+            $('.motki-text').fadeOut();
+
+            setTimeout(function () {
+                $('.celebrate-title').fadeIn(1000);
+            }, 500);
+
+            setTimeout(function () {
+                $('.sa-restart').css('display', 'inline-block').hide().fadeIn(800);
+            }, 2000);
+
+            $('#birthday').show().css('pointer-events', 'auto');
+            startFireworks();
+        });
+
+        function startFireworks() {
+            const PI2 = Math.PI * 2;
+            const random = (min, max) => Math.random() * (max - min + 1) + min | 0;
+            const timestamp = _ => new Date().getTime();
+
+            class Birthday {
+                constructor() {
+                    this.resize();
+                    this.fireworks = [];
+                    this.counter = 0;
+                }
+
+                resize() {
+                    this.width = canvas.width = window.innerWidth;
+                    let center = this.width / 2 | 0;
+                    this.spawnA = center - center / 4 | 0;
+                    this.spawnB = center + center / 4 | 0;
+
+                    this.height = canvas.height = window.innerHeight;
+                    this.spawnC = this.height * .1;
+                    this.spawnD = this.height * .5;
+                }
+
+                onClick(evt) {
+                    let x = evt.clientX || evt.touches && evt.touches[0].pageX;
+                    let y = evt.clientY || evt.touches && evt.touches[0].pageY;
+
+                    let count = random(3, 5);
+                    for (let i = 0; i < count; i++) this.fireworks.push(new Firework(
+                        random(this.spawnA, this.spawnB),
+                        this.height,
+                        x,
+                        y,
+                        random(0, 260),
+                        random(30, 110)));
+
+                    this.counter = -1;
+                }
+
+              update(delta) {
+                ctx.globalCompositeOperation = 'hard-light';
+                // Using a transparent dark blue clear color to match the space background of page 6
+                ctx.fillStyle = `rgba(10, 17, 40, ${0.15 * (delta * 60)})`;
+                ctx.fillRect(0, 0, this.width, this.height);
+
+                ctx.globalCompositeOperation = 'source-over';
+                for (let firework of this.fireworks) firework.update(delta);
+
+                this.counter += delta * 3;
+                if (this.counter >= 1) {
+                  this.fireworks.push(new Firework(
+                    random(this.spawnA, this.spawnB),
+                    this.height,
+                    random(0, this.width),
+                    random(0, this.height * 0.6),
+                    random(0, 360),
+                    random(30, 110)));
+                  this.counter = 0;
+                }
+
+                if (this.fireworks.length > 500) this.fireworks = this.fireworks.filter(firework => !firework.dead);
+              }
+            }
+
+            class Firework {
+                constructor(x, y, targetX, targetY, shade, offsprings) {
+                    this.dead = false;
+                    this.offsprings = offsprings;
+                    this.x = x;
+                    this.y = y;
+                    this.targetX = targetX;
+                    this.targetY = targetY;
+                    this.shade = shade;
+                    this.history = [];
+                }
+                update(delta) {
+                    if (this.dead) return;
+
+                    let xDiff = this.targetX - this.x;
+                    let yDiff = this.targetY - this.y;
+                    if (Math.abs(xDiff) > 3 || Math.abs(yDiff) > 3) {
+                        this.x += xDiff * 2 * delta;
+                        this.y += yDiff * 2 * delta;
+
+                        this.history.push({
+                            x: this.x,
+                            y: this.y
+                        });
+
+                        if (this.history.length > 20) this.history.shift();
+
+                    } else {
+                        if (this.offsprings && !this.madeChilds) {
+                            let babies = this.offsprings / 2;
+                            for (let i = 0; i < babies; i++) {
+                                let targetX = this.x + this.offsprings * Math.cos(PI2 * i / babies) | 0;
+                                let targetY = this.y + this.offsprings * Math.sin(PI2 * i / babies) | 0;
+                                birthday.fireworks.push(new Firework(this.x, this.y, targetX, targetY, this.shade, 0));
+                            }
+                        }
+                        this.madeChilds = true;
+                        this.history.shift();
+                    }
+
+                    if (this.history.length === 0) this.dead = true;
+                    else if (this.offsprings) {
+                        for (let i = 0; this.history.length > i; i++) {
+                            let point = this.history[i];
+                            ctx.beginPath();
+                            // Higher HSL lightness for neon visibility on dark background
+                            ctx.fillStyle = 'hsl(' + this.shade + ', 100%, ' + (40 + i) + '%)';
+                            ctx.arc(point.x, point.y, 2, 0, PI2, false);
+                            ctx.fill();
+                        }
+                    } else {
+                        ctx.beginPath();
+                        ctx.fillStyle = 'hsl(' + this.shade + ', 100%, 65%)';
+                        ctx.arc(this.x, this.y, 2, 0, PI2, false);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            let canvas = document.getElementById('birthday');
+            let ctx = canvas.getContext('2d');
+            let then = timestamp();
+            let birthday = new Birthday();
+
+            window.addEventListener('resize', () => birthday.resize());
+            document.addEventListener('click', evt => birthday.onClick(evt));
+            document.addEventListener('touchstart', evt => birthday.onClick(evt));
+
+            (function loop() {
+                requestAnimationFrame(loop);
+                let now = timestamp();
+                let delta = now - then;
+                then = now;
+                birthday.update(delta / 1000);
+            })();
+        }
+
+        $(document).ready(function() {
+            // 1. Generate twinkle stars matching page 6 theme
+            const background = document.getElementById('skyBackground');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'twinkle-star';
+                const size = Math.random() * 3.5 + 1.5;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 4 + 's';
+                star.style.animationDuration = Math.random() * 3 + 2 + 's';
+                background.appendChild(star);
+            }
+
+            // 2. Generate swaying decorations matching page 6 theme
+            const decorations = document.getElementById('hangingDecorations');
+            const icons = ['❤️', '⭐️', '💖', '✨', '💕', '⭐'];
+            const screenWidth = window.innerWidth;
+            const amount = Math.floor(screenWidth / 80);
+
+            for (let i = 0; i < amount; i++) {
+                const dangler = document.createElement('div');
+                dangler.className = 'dangler';
+                dangler.style.left = (i * 80) + Math.random() * 20 + 'px';
+                
+                const line = document.createElement('div');
+                line.className = 'dangler-line';
+                const lineVal = Math.random() * 80 + 40;
+                line.style.height = lineVal + 'px';
+
+                const icon = document.createElement('div');
+                icon.className = 'dangler-icon';
+                icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+
+                dangler.appendChild(line);
+                dangler.appendChild(icon);
+                decorations.appendChild(dangler);
+            }
+        });
+    </script>
+</body>
+
+</html>

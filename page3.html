@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop the Balloons!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f7ede2;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.8s ease;
+        }
+
+        .game-area {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Balloon Styles */
+        .balloon-wrapper {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            /* Slide up entry animation */
+            animation: slideUp 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            bottom: 25%;
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .balloon {
+            width: 120px;
+            height: 150px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            z-index: 2;
+        }
+
+        /* Reflection highlight */
+        .balloon::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 20px;
+            width: 15px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(-15deg);
+        }
+
+        /* Knot */
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 12px solid inherit;
+            /* Using a trick to match parent color: we apply the color in JS to the wrapper, and set border-bottom-color there */
+            z-index: -1;
+        }
+
+        .balloon-string {
+            width: 3px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.7);
+            margin-top: -2px;
+            z-index: 1;
+        }
+
+        .balloon-number {
+            color: #ffffff;
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 3;
+        }
+
+        /* Pop Animation */
+        .burst .balloon {
+            transform: scale(1.4);
+            opacity: 0;
+            transition: all 0.2s ease-out;
+        }
+
+        .burst .balloon-string {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .burst-particles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: radial-gradient(circle, #fff 20%, transparent 60%);
+        }
+
+        .burst .burst-particles {
+            display: block;
+            animation: flash 0.3s ease-out forwards;
+        }
+
+        @keyframes flash {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Final Card Styles */
+        .final-card {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            z-index: 10;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.8);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .final-card.show {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .final-card-icons {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: -10px;
+        }
+
+        .final-icon-balloon {
+            width: 50px;
+            height: 60px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .final-icon-balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 6px solid inherit;
+        }
+
+        .final-icon-string {
+            width: 2px;
+            height: 40px;
+            background: #ccc;
+            margin: -2px auto 0;
+        }
+
+        .b-blue {
+            background-color: #2980b9;
+            border-bottom-color: #2980b9;
+            transform: rotate(-10deg);
+            margin-right: -10px;
+            z-index: 2;
+            margin-top: 10px;
+        }
+
+        .b-red {
+            background-color: #ff4d6d;
+            border-bottom-color: #ff4d6d;
+            transform: rotate(10deg);
+            z-index: 1;
+        }
+
+        .final-card h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .final-card p {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+        }
+
+        .btn-continue {
+            background-color: #008f39;
+            /* matches standard "continue" green style */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, background-color 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-continue:hover {
+            background-color: #00762e;
+            transform: translateY(-2px);
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 30px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="game-area" id="gameArea">
+        <div class="instructions" id="instructions">Press to open</div>
+        <!-- Balloons appended here -->
+    </div>
+
+    <!-- Final Card -->
+    <div class="final-card" id="finalCard">
+        <div class="final-card-icons">
+            <div>
+                <div class="final-icon-balloon b-blue" style="border-bottom-color: #2980b9;">1</div>
+                <div class="final-icon-string"></div>
+            </div>
+            <div>
+                <div class="final-icon-balloon b-red" style="border-bottom-color: #ff4d6d;">9</div>
+                <div class="final-icon-string"></div>
+            </div>
+        </div>
+        <h2>Happy Birthday cutie </h2>
+        <p>Hayee meri choti babu etni bari ho gyi 🥳</p>
+        <a href="page7.html" class="btn-continue">Continue</a>
+    </div>
+
+    <script>
+        const totalBalloons = 19;
+        let currentNumber = 1;
+        const gameArea = document.getElementById('gameArea');
+        const finalCard = document.getElementById('finalCard');
+        const instructions = document.getElementById('instructions');
+
+        // Audio setup
+        // Using a generic pop sound since local audio is complex without a hosted file. 
+        // We use a small synthesized beep/pop if external url fails, or rely purely on visuals.
+        // Actually, let's use Web Audio API for a reliable 100% offline pop sound without external libraries!
+        // We handle AudioContext safely inside a try-catch
+        let audioCtx;
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.warn('Web Audio API not supported', e);
+        }
+
+        function playPopSound() {
+            if (!audioCtx) return;
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
+
+                gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } catch (e) {
+                console.warn('Audio play failed', e);
+            }
+        }
+
+        // Color palettes
+        const bgColors = [
+            '#2b2d42', '#8d99ae', '#4a4e69', '#22223b', '#003049',
+            '#3d405b', '#005f73', '#0a9396', '#ca6702', '#ae2012',
+            '#1d3557', '#457b9d', '#e07a5f', '#3d5a80', '#293241'
+        ];
+
+        const balloonColors = [
+            '#ef233c', '#d90429', '#f28482', '#f4a261', '#e76f51',
+            '#2a9d8f', '#e9c46a', '#8ecae6', '#219ebc', '#023047',
+            '#ffb703', '#fb8500', '#8338ec', '#ff006e', '#38b000'
+        ];
+
+        function getRandomColor(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function createBalloon(number) {
+            // Change background
+            document.body.style.backgroundColor = getRandomColor(bgColors);
+
+            // Hide instructions after first click
+            if (number > 1) {
+                instructions.style.opacity = '0';
+            }
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'balloon-wrapper';
+
+            const bColor = getRandomColor(balloonColors);
+
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.backgroundColor = bColor;
+
+            // Pseudo elements in CSS can't dynamically take inline variables easily in older browsers, 
+            // but we can inject a style tag or just add an actual div for the knot for easier color matching.
+            const knot = document.createElement('div');
+            knot.style.position = 'absolute';
+            knot.style.bottom = '-10px';
+            knot.style.left = '50%';
+            knot.style.transform = 'translateX(-50%)';
+            knot.style.borderLeft = '10px solid transparent';
+            knot.style.borderRight = '10px solid transparent';
+            knot.style.borderBottom = '12px solid ' + bColor;
+            knot.style.zIndex = '-1';
+            balloon.appendChild(knot);
+
+            const num = document.createElement('div');
+            num.className = 'balloon-number';
+            num.innerText = number;
+
+            const particles = document.createElement('div');
+            particles.className = 'burst-particles';
+
+            balloon.appendChild(num);
+            balloon.appendChild(particles);
+
+            const string = document.createElement('div');
+            string.className = 'balloon-string';
+
+            wrapper.appendChild(balloon);
+            wrapper.appendChild(string);
+
+            // Pop interaction
+            wrapper.addEventListener('mousedown', () => handlePop(wrapper, number));
+            wrapper.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // prevent double firing
+                handlePop(wrapper, number);
+            }, { passive: false });
+
+            gameArea.appendChild(wrapper);
+        }
+
+        function handlePop(element, number) {
+            if (element.classList.contains('burst')) return; // prevent double click
+
+            playPopSound();
+            element.classList.add('burst');
+
+            setTimeout(() => {
+                element.remove();
+                if (number < totalBalloons) {
+                    currentNumber++;
+                    createBalloon(currentNumber);
+                } else {
+                    showFinalCard();
+                }
+            }, 300); // Wait for burst animation
+        }
+
+        function showFinalCard() {
+            // Light background for final card
+            document.body.style.backgroundColor = '#00f5d4'; // bright cyan matching image
+            instructions.style.display = 'none';
+            setTimeout(() => {
+                finalCard.classList.add('show');
+            }, 500);
+        }
+
+        // Initialize first balloon immediately
+        createBalloon(currentNumber);
+
+    </script>
+</body>
+
+</html>
